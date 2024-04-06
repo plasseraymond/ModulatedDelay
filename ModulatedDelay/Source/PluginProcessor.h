@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ModulatedDelayEffect.h"
 
 //==============================================================================
 /**
@@ -52,8 +53,20 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    void setEffect(int selection);
+    
+    float effectRate = 0.1f;
+    float effectDepth = 1.f;
+    float effectDelay = 0.f;
+    float effectWet = 0.f;
+    
+    bool bypass = false;
 
 private:
+    ModulatedDelayEffect * effect;
+    double Fs = 44100.0;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulatedDelayAudioProcessor)
 };

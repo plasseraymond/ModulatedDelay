@@ -11,6 +11,19 @@
       <FILE id="RMMf7A" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="Yo9KGl" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="fKNxqm" name="ModulatedDelayEffect.cpp" compile="1" resource="0"
+            file="Source/ModulatedDelayEffect.cpp"/>
+      <FILE id="luG4FT" name="ModulatedDelayEffect.h" compile="0" resource="0"
+            file="Source/ModulatedDelayEffect.h"/>
+      <FILE id="tozE7g" name="ChorusEffect.cpp" compile="1" resource="0"
+            file="Source/ChorusEffect.cpp"/>
+      <FILE id="MuGRA1" name="ChorusEffect.h" compile="0" resource="0" file="Source/ChorusEffect.h"/>
+      <FILE id="Bg1gFP" name="FractionalDelay.cpp" compile="1" resource="0"
+            file="Source/FractionalDelay.cpp"/>
+      <FILE id="wXPdHC" name="FractionalDelay.h" compile="0" resource="0"
+            file="Source/FractionalDelay.h"/>
+      <FILE id="WOwu3X" name="LFO.cpp" compile="1" resource="0" file="Source/LFO.cpp"/>
+      <FILE id="BhXPkv" name="LFO.h" compile="0" resource="0" file="Source/LFO.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
