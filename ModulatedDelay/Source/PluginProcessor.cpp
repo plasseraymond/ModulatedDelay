@@ -95,7 +95,7 @@ void ModulatedDelayAudioProcessor::changeProgramName (int index, const juce::Str
 //==============================================================================
 void ModulatedDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    effect = new ModulatedDelayEffect;
+    effect = new ChorusEffect;
     effect->prepare(sampleRate);
     Fs = sampleRate;
 
@@ -193,17 +193,17 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
     
     delete effect;
     
-    if(selection == 0) { // temporary work-around for first instantiation of plug-in
-        effect = new ModulatedDelayEffect;
-    }
-    
     if(selection == 1) {
-        effect = new ModulatedDelayEffect;
-    }
-    
-    if(selection == 2) {
         effect = new ChorusEffect;
     }
+    
+//    if(selection == 2) {
+//        effect = new FlangerEffect;
+//    }
+    
+//    if(selection == 3) {
+//        effect = new PhaserEffect;
+//    }
     
     effect->prepare(Fs);
 }

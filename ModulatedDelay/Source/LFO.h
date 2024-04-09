@@ -10,6 +10,7 @@
 
 #pragma once
 #include <cmath>
+#include <iostream>
 
 class LFO {
 public:

@@ -37,7 +37,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     
     // Delay Knob
     delaySlider.setBounds(250, 275, 100, 100);
-    delaySlider.setRange(0.f,50.f);
+    delaySlider.setRange(10.f,50.f);
     delaySlider.setSkewFactorFromMidPoint(25.f);
     delaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     delaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
@@ -56,9 +56,10 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     // ComboBox Selection
     selector.addListener(this);
     selector.setBounds(230, 100, 140, 40);
-    selector.addItem("Empty",1);
-    selector.addItem("Chorus",2);
-    selector.setText("Select Type...");
+    selector.addItem("Chorus",1);
+    selector.addItem("Flanger",2);
+    selector.addItem("Phaser",3);
+//    selector.setText("Select Type...");
     addAndMakeVisible(selector);
     
     // Toggle Button

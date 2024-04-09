@@ -56,10 +56,10 @@ public:
     
     void setEffect(int selection);
     
-    float effectRate = 0.1f;
-    float effectDepth = 1.f;
-    float effectDelay = 0.f;
-    float effectWet = 0.f;
+    float effectRate = 0.6f;
+    float effectDepth = 5.f;
+    float effectDelay = 30.f;
+    float effectWet = 50.f;
     
     bool bypass = false;
 

@@ -24,9 +24,7 @@ public:
     
     void process(float * buffer, const int N, const int c);
     
-    virtual float processSample(float x, const int c, float lfoValue) {
-        return x;
-    }
+    virtual float processSample(float x, const int c, float lfoValue) = 0;
     
     void setRate(float rate) {
         this->rate = rate;
