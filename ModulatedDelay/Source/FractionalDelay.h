@@ -13,10 +13,12 @@
 
 class FractionalDelay {
 public:
+    // unique prepare method to assign Fs
     void prepare(double Fs) {
         this->Fs = float(Fs);
     }
     
+    // processDelay method for calculating fractional delay given the LFO's value
     float processDelay(float x, const int c, float lfoValue);
     
 private:

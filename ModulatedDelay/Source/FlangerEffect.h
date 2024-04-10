@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    ChorusEffect.h
-    Created: 29 Mar 2024 9:31:09pm
+    FlangerEffect.h
+    Created: 9 Apr 2024 10:19:57pm
     Author:  Raymond Plasse
 
   ==============================================================================
@@ -12,12 +12,12 @@
 #include "ModulatedDelayEffect.h"
 #include "FractionalDelay.h"
 
-class ChorusEffect : public ModulatedDelayEffect {
+class FlangerEffect : public ModulatedDelayEffect {
 public:
     // override of base class's prepare method which actually utilizes base class's prepare implementation
     void prepare(double sampleRate) override {
         ModulatedDelayEffect::prepare(sampleRate);
-        fd.prepare(sampleRate); // prepares FractionalDelay object data member unique to ChorusEffect
+        fd.prepare(sampleRate); // prepares FractionalDelay object data member unique to FlangerEffect
     }
     
     // override of base class's processSample method (REQUIRED)

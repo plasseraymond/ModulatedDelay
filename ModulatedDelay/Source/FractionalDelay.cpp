@@ -20,7 +20,7 @@ float FractionalDelay::processDelay(float x, const int c, float lfoValue) {
     float g2 = lfoSamples - (float)d1;
     float g1 = 1.f - g2;
 
-    // determine indexes given delay time
+    // determine indices given delay time
     int indexD1 = index[c] - d1;
     if(indexD1 < 0) {
         indexD1 += MAX_BUFFER_SIZE;

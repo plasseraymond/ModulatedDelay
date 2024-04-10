@@ -13,52 +13,86 @@
 ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (ModulatedDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize (600, 400);
 
-    // Rate Knob
-    rateSlider.setBounds(100, 200, 100, 100);
-    rateSlider.setRange(0.1f,10.f);
-    rateSlider.setSkewFactorFromMidPoint(5.f);
-    rateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    rateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    addAndMakeVisible(rateSlider);
-    rateSlider.addListener(this);
+    // Chorus Rate Knob
+    chorusRateSlider.setBounds(100, 200, 100, 100);
+    chorusRateSlider.setRange(0.1f,10.f);
+    chorusRateSlider.setSkewFactorFromMidPoint(5.f);
+    chorusRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    chorusRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(chorusRateSlider);
+    chorusRateSlider.addListener(this);
     
-    // Depth Knob
-    depthSlider.setBounds(400, 200, 100, 100);
-    depthSlider.setRange(1.f,10.f);
-    depthSlider.setSkewFactorFromMidPoint(5.f);
-    depthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    depthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    addAndMakeVisible(depthSlider);
-    depthSlider.addListener(this);
+    // Chorus Depth Knob
+    chorusDepthSlider.setBounds(400, 200, 100, 100);
+    chorusDepthSlider.setRange(1.f,10.f);
+    chorusDepthSlider.setSkewFactorFromMidPoint(5.f);
+    chorusDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    chorusDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(chorusDepthSlider);
+    chorusDepthSlider.addListener(this);
     
-    // Delay Knob
-    delaySlider.setBounds(250, 275, 100, 100);
-    delaySlider.setRange(10.f,50.f);
-    delaySlider.setSkewFactorFromMidPoint(25.f);
-    delaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    delaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    addAndMakeVisible(delaySlider);
-    delaySlider.addListener(this);
+    // Chorus Delay Knob
+    chorusDelaySlider.setBounds(250, 275, 100, 100);
+    chorusDelaySlider.setRange(10.f,50.f);
+    chorusDelaySlider.setSkewFactorFromMidPoint(25.f);
+    chorusDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    chorusDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(chorusDelaySlider);
+    chorusDelaySlider.addListener(this);
     
-    // Wet Knob
-    wetSlider.setBounds(490, 30, 80, 80);
-    wetSlider.setRange(0.f,100.f);
-    wetSlider.setSkewFactorFromMidPoint(50.f);
-    wetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    wetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    addAndMakeVisible(wetSlider);
-    wetSlider.addListener(this);
+    // Chorus Wet Knob
+    chorusWetSlider.setBounds(490, 30, 80, 80);
+    chorusWetSlider.setRange(0.f,100.f);
+    chorusWetSlider.setSkewFactorFromMidPoint(50.f);
+    chorusWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    chorusWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(chorusWetSlider);
+    chorusWetSlider.addListener(this);
+    
+    // Flanger Rate Knob
+    flangerRateSlider.setBounds(100, 200, 100, 100);
+    flangerRateSlider.setRange(0.1f,10.f);
+    flangerRateSlider.setSkewFactorFromMidPoint(5.f);
+    flangerRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    flangerRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(flangerRateSlider);
+    flangerRateSlider.addListener(this);
+    
+    // Flanger Depth Knob
+    flangerDepthSlider.setBounds(400, 200, 100, 100);
+    flangerDepthSlider.setRange(1.f,10.f);
+    flangerDepthSlider.setSkewFactorFromMidPoint(5.f);
+    flangerDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    flangerDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(flangerDepthSlider);
+    flangerDepthSlider.addListener(this);
+    
+    // Flanger Delay Knob
+    flangerDelaySlider.setBounds(250, 275, 100, 100);
+    flangerDelaySlider.setRange(10.f,50.f);
+    flangerDelaySlider.setSkewFactorFromMidPoint(25.f);
+    flangerDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    flangerDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(flangerDelaySlider);
+    flangerDelaySlider.addListener(this);
+    
+    // Flanger Wet Knob
+    flangerWetSlider.setBounds(490, 30, 80, 80);
+    flangerWetSlider.setRange(0.f,100.f);
+    flangerWetSlider.setSkewFactorFromMidPoint(50.f);
+    flangerWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    flangerWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(flangerWetSlider);
+    flangerWetSlider.addListener(this);
     
     // ComboBox Selection
     selector.addListener(this);
     selector.setBounds(230, 100, 140, 40);
     selector.addItem("Chorus",1);
     selector.addItem("Flanger",2);
-    selector.addItem("Phaser",3);
+//    selector.addItem("Phaser",3);
 //    selector.setText("Select Type...");
     addAndMakeVisible(selector);
     
@@ -77,7 +111,6 @@ ModulatedDelayAudioProcessorEditor::~ModulatedDelayAudioProcessorEditor()
 //==============================================================================
 void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
     g.setColour (juce::Colours::white);
@@ -89,7 +122,6 @@ void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
     g.drawText ("Depth", 400, 170, 100, 40, juce::Justification::centred, false);
     g.drawText ("Delay", 250, 245, 100, 40, juce::Justification::centred, false);
     g.drawText ("Wet", 515, 0, 100, 40, juce::Justification::left, false);
-
 }
 
 void ModulatedDelayAudioProcessorEditor::resized()
@@ -98,31 +130,34 @@ void ModulatedDelayAudioProcessorEditor::resized()
     // subcomponents in your editor..
 }
 
+// derived class implementation for changing each slider value
 void ModulatedDelayAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) {
-    if(slider == &rateSlider) {
-        audioProcessor.effectRate = rateSlider.getValue();
+    if(slider == &chorusRateSlider) {
+        audioProcessor.effectRate = chorusRateSlider.getValue();
     }
     
-    if(slider == &depthSlider) {
-        audioProcessor.effectDepth = depthSlider.getValue();
+    if(slider == &chorusDepthSlider) {
+        audioProcessor.effectDepth = chorusDepthSlider.getValue();
     }
     
-    if(slider == &delaySlider) {
-        audioProcessor.effectDelay = delaySlider.getValue();
+    if(slider == &chorusDelaySlider) {
+        audioProcessor.effectDelay = chorusDelaySlider.getValue();
     }
     
-    if(slider == &wetSlider) {
-        audioProcessor.effectWet = wetSlider.getValue();
+    if(slider == &chorusWetSlider) {
+        audioProcessor.effectWet = chorusWetSlider.getValue();
     }
     
 }
 
+// derived class implementation for changing the drop-down menu selection
 void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox) {
     if(comboBox == &selector) {
         audioProcessor.setEffect(selector.getSelectedId());
     }
 }
 
+// derived class implementation for engaging the bypass toggle button
 void ModulatedDelayAudioProcessorEditor::buttonClicked(juce::Button* button) {
     if(button == &bypassButton) {
         audioProcessor.bypass = bypassButton.getToggleState();

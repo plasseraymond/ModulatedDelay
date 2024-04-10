@@ -18,6 +18,9 @@
       <FILE id="tozE7g" name="ChorusEffect.cpp" compile="1" resource="0"
             file="Source/ChorusEffect.cpp"/>
       <FILE id="MuGRA1" name="ChorusEffect.h" compile="0" resource="0" file="Source/ChorusEffect.h"/>
+      <FILE id="nFLhul" name="FlangerEffect.cpp" compile="1" resource="0"
+            file="Source/FlangerEffect.cpp"/>
+      <FILE id="fgP5qO" name="FlangerEffect.h" compile="0" resource="0" file="Source/FlangerEffect.h"/>
       <FILE id="Bg1gFP" name="FractionalDelay.cpp" compile="1" resource="0"
             file="Source/FractionalDelay.cpp"/>
       <FILE id="wXPdHC" name="FractionalDelay.h" compile="0" resource="0"

@@ -27,6 +27,7 @@ ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
 
 ModulatedDelayAudioProcessor::~ModulatedDelayAudioProcessor()
 {
+    // delete the effect pointer to prevent memory leak
     delete effect;
 }
 
@@ -95,10 +96,15 @@ void ModulatedDelayAudioProcessor::changeProgramName (int index, const juce::Str
 //==============================================================================
 void ModulatedDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    // instantiate a new ChorusEffect object to point the effect pointer at
     effect = new ChorusEffect;
+    
+    // call the ChorusEffect implementation of the prepare method and pass it the host's sample rate
     effect->prepare(sampleRate);
+    
+    // assign the host's sample rate to the plugin's sample rate
     Fs = sampleRate;
-
+    
 }
 
 void ModulatedDelayAudioProcessor::releaseResources()
@@ -142,20 +148,30 @@ void ModulatedDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // get the total number of samples in the buffer
     int N = buffer.getNumSamples();
     
+    // simply bypass the processing if the toggle button is engaged
     if(bypass)
         return;
     
+    // set plugin DSP params based on the values of each GUI knob/slider
+    // Is this why my processor sounds glitchy/noisy/artefacty/distorted/clicky?
+    // I don't think this needs to happen every buffer, but rather, every time there's a slider change
     effect->setRate(effectRate);
     effect->setDepth(effectDepth);
     effect->setDelay(effectDelay);
     effect->setWet(effectWet);
+    
+    // Austin mentioned using these (below) to maybe help with the glitchiness. . .
+    // Circular buffers?
+    // DryWetMixer()?
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
 
+        // call the base class generic process method which inherently calls the derived class implementation of processSample
         effect->process(channelData, N, channel);
     }
 }
@@ -191,12 +207,15 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
     // FLANGER = 2
     // PHASER = 3
     
+    // first delete the pointer pointing to the current effect
     delete effect;
     
+    // depending on the comboBox selection, create the correct effect
     if(selection == 1) {
         effect = new ChorusEffect;
     }
     
+    // COMING UP. . .
 //    if(selection == 2) {
 //        effect = new FlangerEffect;
 //    }
@@ -205,6 +224,7 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
 //        effect = new PhaserEffect;
 //    }
     
+    // call the derived class's implementation of prepare and pass it the plugin's sample rate
     effect->prepare(Fs);
 }
 

@@ -14,6 +14,7 @@
 //==============================================================================
 /**
 */
+// inherit the necessary GUI graphics classes to add listeners
 class ModulatedDelayAudioProcessorEditor  : public juce::AudioProcessorEditor ,
                                             public juce::ComboBox::Listener ,
                                             public juce::Slider::Listener ,
@@ -27,22 +28,31 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     
+    // override corresponding juce graphics methods for GUI components
     void sliderValueChanged(juce::Slider* slider) override;
     void comboBoxChanged(juce::ComboBox* comboBox) override;
     void buttonClicked(juce::Button* button) override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
+
     ModulatedDelayAudioProcessor& audioProcessor;
-        
-    juce::Slider rateSlider;
-    juce::Slider depthSlider;
-    juce::Slider delaySlider;
-    juce::Slider wetSlider;
     
+    // declare ChorusEffect GUI sliders
+    juce::Slider chorusRateSlider;
+    juce::Slider chorusDepthSlider;
+    juce::Slider chorusDelaySlider;
+    juce::Slider chorusWetSlider;
+    
+    // declare FlangerEffect GUI sliders
+    juce::Slider flangerRateSlider;
+    juce::Slider flangerDepthSlider;
+    juce::Slider flangerDelaySlider;
+    juce::Slider flangerWetSlider;
+    
+    // declare GUI drop-down menu
     juce::ComboBox selector;
     
+    // declare GUI bypass checkbox
     juce::ToggleButton bypassButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulatedDelayAudioProcessorEditor)
