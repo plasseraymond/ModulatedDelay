@@ -10,19 +10,19 @@
 
 #include "LFO.h"
 
-float LFO::calculate(float rate, float depth, float delay) {
+float LFO::calculate(float rate, float depth, float delay, const int c) {
     // determine the angle by which the LFO traverses the unit circle
     float angleChange = rate * (1.f/Fs) * 2.f * M_PI;
     
     // calculate the LFO's value at its current angle
-    float lfoValue = depth * sin(currentAngle) + delay;
+    float lfoValue = depth * sin(currentAngle[c]) + delay;
     
     // update the current angle based on the angle of change
-    currentAngle += angleChange;
+    currentAngle[c] += angleChange;
     
     // check for when the current angle exceeds 2*pi
-    if(currentAngle > 2.f * M_PI) {
-        currentAngle = 0.f;
+    if(currentAngle[c] > 2.f * M_PI) {
+        currentAngle[c] = 0.f;
     }
     
     return lfoValue;

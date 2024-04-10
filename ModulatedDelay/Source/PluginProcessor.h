@@ -57,11 +57,23 @@ public:
     // establish whether effect is Chorus, Flanger, or Phaser processor using comboBox
     void setEffect(int selection);
     
+    void setEffectID(int ID) {
+        effectID = ID;
+    }
+    int getEffectID() {
+        return effectID;
+    }
+    
     // initialize effect variables to connect with GUI knobs/sliders
-    float effectRate = 0.1f;
-    float effectDepth = 1.f;
-    float effectDelay = 10.f;
-    float effectWet = 0.f;
+    float chorusEffectRate = 0.1f;
+    float chorusEffectDepth = 1.f;
+    float chorusEffectDelay = 1.f;
+    float chorusEffectWet = 0.f;
+    
+    float flangerEffectRate = 0.1f;
+    float flangerEffectDepth = 1.f;
+    float flangerEffectDelay = 1.f;
+    float flangerEffectWet = 0.f;
     
     // declare bypass button
     bool bypass = false;
@@ -70,6 +82,7 @@ private:
     // create a pointer to a base class type efffect
     ModulatedDelayEffect * effect;
     double Fs = 1.0;
+    int effectID = 0;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulatedDelayAudioProcessor)

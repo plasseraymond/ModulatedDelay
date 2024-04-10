@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "ChorusEffect.h"
+#include "FlangerEffect.h"
 
 //==============================================================================
 ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
@@ -156,13 +157,20 @@ void ModulatedDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         return;
     
     // set plugin DSP params based on the values of each GUI knob/slider
-    // Is this why my processor sounds glitchy/noisy/artefacty/distorted/clicky?
-    // I don't think this needs to happen every buffer, but rather, every time there's a slider change
-    effect->setRate(effectRate);
-    effect->setDepth(effectDepth);
-    effect->setDelay(effectDelay);
-    effect->setWet(effectWet);
-    
+    if(getEffectID() == 1) {
+        effect->setRate(chorusEffectRate);
+        effect->setDepth(chorusEffectDepth);
+        effect->setDelay(chorusEffectDelay);
+        effect->setWet(chorusEffectWet);
+    }
+
+    if(getEffectID() == 2) {
+        effect->setRate(flangerEffectRate);
+        effect->setDepth(flangerEffectDepth);
+        effect->setDelay(flangerEffectDelay);
+        effect->setWet(flangerEffectWet);
+    }
+
     // Austin mentioned using these (below) to maybe help with the glitchiness. . .
     // Circular buffers?
     // DryWetMixer()?
@@ -215,10 +223,9 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
         effect = new ChorusEffect;
     }
     
-    // COMING UP. . .
-//    if(selection == 2) {
-//        effect = new FlangerEffect;
-//    }
+    if(selection == 2) {
+        effect = new FlangerEffect;
+    }
     
 //    if(selection == 3) {
 //        effect = new PhaserEffect;

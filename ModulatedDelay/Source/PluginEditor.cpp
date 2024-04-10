@@ -35,7 +35,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     
     // Chorus Delay Knob
     chorusDelaySlider.setBounds(250, 275, 100, 100);
-    chorusDelaySlider.setRange(10.f,50.f);
+    chorusDelaySlider.setRange(1.f,50.f);
     chorusDelaySlider.setSkewFactorFromMidPoint(25.f);
     chorusDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
@@ -71,7 +71,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     
     // Flanger Delay Knob
     flangerDelaySlider.setBounds(250, 275, 100, 100);
-    flangerDelaySlider.setRange(10.f,50.f);
+    flangerDelaySlider.setRange(1.f,50.f);
     flangerDelaySlider.setSkewFactorFromMidPoint(25.f);
     flangerDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
@@ -133,27 +133,66 @@ void ModulatedDelayAudioProcessorEditor::resized()
 // derived class implementation for changing each slider value
 void ModulatedDelayAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) {
     if(slider == &chorusRateSlider) {
-        audioProcessor.effectRate = chorusRateSlider.getValue();
+        audioProcessor.chorusEffectRate = chorusRateSlider.getValue();
     }
     
     if(slider == &chorusDepthSlider) {
-        audioProcessor.effectDepth = chorusDepthSlider.getValue();
+        audioProcessor.chorusEffectDepth = chorusDepthSlider.getValue();
     }
     
     if(slider == &chorusDelaySlider) {
-        audioProcessor.effectDelay = chorusDelaySlider.getValue();
+        audioProcessor.chorusEffectDelay = chorusDelaySlider.getValue();
     }
     
     if(slider == &chorusWetSlider) {
-        audioProcessor.effectWet = chorusWetSlider.getValue();
+        audioProcessor.chorusEffectWet = chorusWetSlider.getValue();
     }
     
+    if(slider == &flangerRateSlider) {
+        audioProcessor.flangerEffectRate = flangerRateSlider.getValue();
+    }
+    
+    if(slider == &flangerDepthSlider) {
+        audioProcessor.flangerEffectDepth = flangerDepthSlider.getValue();
+    }
+    
+    if(slider == &flangerDelaySlider) {
+        audioProcessor.flangerEffectDelay = flangerDelaySlider.getValue();
+    }
+    
+    if(slider == &flangerWetSlider) {
+        audioProcessor.flangerEffectWet = flangerWetSlider.getValue();
+    }
 }
 
 // derived class implementation for changing the drop-down menu selection
 void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox) {
     if(comboBox == &selector) {
-        audioProcessor.setEffect(selector.getSelectedId());
+        if(selector.getSelectedId() == 1) {
+            audioProcessor.setEffect(selector.getSelectedId());
+            audioProcessor.setEffectID(selector.getSelectedId());
+            chorusRateSlider.setVisible(true);
+            chorusDepthSlider.setVisible(true);
+            chorusDelaySlider.setVisible(true);
+            chorusWetSlider.setVisible(true);
+            flangerRateSlider.setVisible(false);
+            flangerDepthSlider.setVisible(false);
+            flangerDelaySlider.setVisible(false);
+            flangerWetSlider.setVisible(false);
+        }
+        
+        if(selector.getSelectedId() == 2) {
+            audioProcessor.setEffect(selector.getSelectedId());
+            audioProcessor.setEffectID(selector.getSelectedId());
+            chorusRateSlider.setVisible(false);
+            chorusDepthSlider.setVisible(false);
+            chorusDelaySlider.setVisible(false);
+            chorusWetSlider.setVisible(false);
+            flangerRateSlider.setVisible(true);
+            flangerDepthSlider.setVisible(true);
+            flangerDelaySlider.setVisible(true);
+            flangerWetSlider.setVisible(true);
+        }
     }
 }
 

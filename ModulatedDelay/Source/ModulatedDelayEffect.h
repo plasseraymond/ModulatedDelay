@@ -54,7 +54,7 @@ protected:
 private:
     float rate = 0.1f;
     float depth = 1.f;
-    float delay = 10.f;
+    float delay = 1.f;
     float wet = 0.f;
     
     // LFO object as private data member

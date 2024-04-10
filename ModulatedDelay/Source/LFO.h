@@ -19,9 +19,9 @@ public:
     }
     
     // calculate method for determining LFO's value given the three common params
-    float calculate(float rate, float depth, float delay);
+    float calculate(float rate, float depth, float delay, const int c);
     
 private:
     float Fs = 1.f;
-    float currentAngle = 0.f; // keeps track of position along unit circle
+    float currentAngle[2] = {0.f}; // keeps track of position along unit circle for L & R channels
 };
