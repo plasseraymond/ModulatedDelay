@@ -21,10 +21,15 @@
       <FILE id="nFLhul" name="FlangerEffect.cpp" compile="1" resource="0"
             file="Source/FlangerEffect.cpp"/>
       <FILE id="fgP5qO" name="FlangerEffect.h" compile="0" resource="0" file="Source/FlangerEffect.h"/>
+      <FILE id="uiCheF" name="PhaserEffect.cpp" compile="1" resource="0"
+            file="Source/PhaserEffect.cpp"/>
+      <FILE id="hGWZnM" name="PhaserEffect.h" compile="0" resource="0" file="Source/PhaserEffect.h"/>
       <FILE id="Bg1gFP" name="FractionalDelay.cpp" compile="1" resource="0"
             file="Source/FractionalDelay.cpp"/>
       <FILE id="wXPdHC" name="FractionalDelay.h" compile="0" resource="0"
             file="Source/FractionalDelay.h"/>
+      <FILE id="V81pWk" name="Biquad.cpp" compile="1" resource="0" file="Source/Biquad.cpp"/>
+      <FILE id="dne3FK" name="Biquad.h" compile="0" resource="0" file="Source/Biquad.h"/>
       <FILE id="WOwu3X" name="LFO.cpp" compile="1" resource="0" file="Source/LFO.cpp"/>
       <FILE id="BhXPkv" name="LFO.h" compile="0" resource="0" file="Source/LFO.h"/>
     </GROUP>

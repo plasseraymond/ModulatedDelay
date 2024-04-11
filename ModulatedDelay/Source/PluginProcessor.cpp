@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include "ChorusEffect.h"
 #include "FlangerEffect.h"
+#include "PhaserEffect.h"
 
 //==============================================================================
 ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
@@ -157,23 +158,26 @@ void ModulatedDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         return;
     
     // set plugin DSP params based on the values of each GUI knob/slider
-    if(getEffectID() == 1) {
+    if(effectID == 1) {
         effect->setRate(chorusEffectRate);
         effect->setDepth(chorusEffectDepth);
         effect->setDelay(chorusEffectDelay);
         effect->setWet(chorusEffectWet);
     }
 
-    if(getEffectID() == 2) {
+    if(effectID == 2) {
         effect->setRate(flangerEffectRate);
         effect->setDepth(flangerEffectDepth);
         effect->setDelay(flangerEffectDelay);
         effect->setWet(flangerEffectWet);
     }
-
-    // Austin mentioned using these (below) to maybe help with the glitchiness. . .
-    // Circular buffers?
-    // DryWetMixer()?
+    
+    if(effectID == 3) {
+        effect->setRate(phaserEffectRate);
+        effect->setDepth(phaserEffectDepth);
+        effect->setDelay(phaserEffectCenterFreq);
+        effect->setWet(phaserEffectWet);
+    }
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -211,6 +215,8 @@ void ModulatedDelayAudioProcessor::setStateInformation (const void* data, int si
 
 void ModulatedDelayAudioProcessor::setEffect(int selection) {
     
+    effectID = selection;
+    
     // CHORUS = 1
     // FLANGER = 2
     // PHASER = 3
@@ -227,9 +233,9 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
         effect = new FlangerEffect;
     }
     
-//    if(selection == 3) {
-//        effect = new PhaserEffect;
-//    }
+    if(selection == 3) {
+        effect = new PhaserEffect;
+    }
     
     // call the derived class's implementation of prepare and pass it the plugin's sample rate
     effect->prepare(Fs);

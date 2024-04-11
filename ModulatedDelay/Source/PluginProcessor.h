@@ -57,13 +57,6 @@ public:
     // establish whether effect is Chorus, Flanger, or Phaser processor using comboBox
     void setEffect(int selection);
     
-    void setEffectID(int ID) {
-        effectID = ID;
-    }
-    int getEffectID() {
-        return effectID;
-    }
-    
     // initialize effect variables to connect with GUI knobs/sliders
     float chorusEffectRate = 0.1f;
     float chorusEffectDepth = 1.f;
@@ -74,6 +67,11 @@ public:
     float flangerEffectDepth = 1.f;
     float flangerEffectDelay = 1.f;
     float flangerEffectWet = 0.f;
+    
+    float phaserEffectRate = 0.1f;
+    float phaserEffectDepth = 1.f;
+    float phaserEffectCenterFreq = 1.f;
+    float phaserEffectWet = 0.f;
     
     // declare bypass button
     bool bypass = false;

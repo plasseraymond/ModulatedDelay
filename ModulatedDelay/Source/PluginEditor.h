@@ -49,6 +49,12 @@ private:
     juce::Slider flangerDelaySlider;
     juce::Slider flangerWetSlider;
     
+    // declare PhaserEffect GUI sliders
+    juce::Slider phaserRateSlider;
+    juce::Slider phaserDepthSlider;
+    juce::Slider phaserCenterFreqSlider;
+    juce::Slider phaserWetSlider;
+    
     // declare GUI drop-down menu
     juce::ComboBox selector;
     

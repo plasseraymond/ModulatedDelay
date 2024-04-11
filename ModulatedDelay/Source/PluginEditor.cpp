@@ -87,13 +87,48 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     addAndMakeVisible(flangerWetSlider);
     flangerWetSlider.addListener(this);
     
+    // Phaser Rate Knob
+    phaserRateSlider.setBounds(100, 200, 100, 100);
+    phaserRateSlider.setRange(0.1f,10.f);
+    phaserRateSlider.setSkewFactorFromMidPoint(5.f);
+    phaserRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    phaserRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(phaserRateSlider);
+    phaserRateSlider.addListener(this);
+    
+    // Phaser Depth Knob
+    phaserDepthSlider.setBounds(400, 200, 100, 100);
+    phaserDepthSlider.setRange(500.f,1500.f);
+    phaserDepthSlider.setSkewFactorFromMidPoint(1000.f);
+    phaserDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    phaserDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(phaserDepthSlider);
+    phaserDepthSlider.addListener(this);
+    
+    // Phaser Center Frequency Knob
+    phaserCenterFreqSlider.setBounds(250, 275, 100, 100);
+    phaserCenterFreqSlider.setRange(250.f,12000.f);
+    phaserCenterFreqSlider.setSkewFactorFromMidPoint(6000.f);
+    phaserCenterFreqSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    phaserCenterFreqSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(phaserCenterFreqSlider);
+    phaserCenterFreqSlider.addListener(this);
+    
+    // Phaser Wet Knob
+    phaserWetSlider.setBounds(490, 30, 80, 80);
+    phaserWetSlider.setRange(0.f,100.f);
+    phaserWetSlider.setSkewFactorFromMidPoint(50.f);
+    phaserWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    phaserWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(phaserWetSlider);
+    phaserWetSlider.addListener(this);
+    
     // ComboBox Selection
     selector.addListener(this);
     selector.setBounds(230, 100, 140, 40);
     selector.addItem("Chorus",1);
     selector.addItem("Flanger",2);
-//    selector.addItem("Phaser",3);
-//    selector.setText("Select Type...");
+    selector.addItem("Phaser",3);
     addAndMakeVisible(selector);
     
     // Toggle Button
@@ -111,8 +146,8 @@ ModulatedDelayAudioProcessorEditor::~ModulatedDelayAudioProcessorEditor()
 //==============================================================================
 void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
+    g.fillAll (juce::Colours::lightcoral); // a work-in-progress
+    
     g.setColour (juce::Colours::white);
     g.setFont (25.0f);
     g.drawFittedText ("My Modulated Delay Plugin!", getLocalBounds(), juce::Justification::centredTop, 1);
@@ -163,6 +198,22 @@ void ModulatedDelayAudioProcessorEditor::sliderValueChanged(juce::Slider* slider
     if(slider == &flangerWetSlider) {
         audioProcessor.flangerEffectWet = flangerWetSlider.getValue();
     }
+    
+    if(slider == &phaserRateSlider) {
+        audioProcessor.phaserEffectRate = phaserRateSlider.getValue();
+    }
+    
+    if(slider == &phaserDepthSlider) {
+        audioProcessor.phaserEffectDepth = phaserDepthSlider.getValue();
+    }
+    
+    if(slider == &phaserCenterFreqSlider) {
+        audioProcessor.phaserEffectCenterFreq = phaserCenterFreqSlider.getValue();
+    }
+    
+    if(slider == &phaserWetSlider) {
+        audioProcessor.phaserEffectWet = phaserWetSlider.getValue();
+    }
 }
 
 // derived class implementation for changing the drop-down menu selection
@@ -170,7 +221,6 @@ void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBo
     if(comboBox == &selector) {
         if(selector.getSelectedId() == 1) {
             audioProcessor.setEffect(selector.getSelectedId());
-            audioProcessor.setEffectID(selector.getSelectedId());
             chorusRateSlider.setVisible(true);
             chorusDepthSlider.setVisible(true);
             chorusDelaySlider.setVisible(true);
@@ -179,11 +229,14 @@ void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBo
             flangerDepthSlider.setVisible(false);
             flangerDelaySlider.setVisible(false);
             flangerWetSlider.setVisible(false);
+            phaserRateSlider.setVisible(false);
+            phaserDepthSlider.setVisible(false);
+            phaserCenterFreqSlider.setVisible(false);
+            phaserWetSlider.setVisible(false);
         }
         
         if(selector.getSelectedId() == 2) {
             audioProcessor.setEffect(selector.getSelectedId());
-            audioProcessor.setEffectID(selector.getSelectedId());
             chorusRateSlider.setVisible(false);
             chorusDepthSlider.setVisible(false);
             chorusDelaySlider.setVisible(false);
@@ -192,6 +245,26 @@ void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBo
             flangerDepthSlider.setVisible(true);
             flangerDelaySlider.setVisible(true);
             flangerWetSlider.setVisible(true);
+            phaserRateSlider.setVisible(false);
+            phaserDepthSlider.setVisible(false);
+            phaserCenterFreqSlider.setVisible(false);
+            phaserWetSlider.setVisible(false);
+        }
+        
+        if(selector.getSelectedId() == 3) {
+            audioProcessor.setEffect(selector.getSelectedId());
+            chorusRateSlider.setVisible(false);
+            chorusDepthSlider.setVisible(false);
+            chorusDelaySlider.setVisible(false);
+            chorusWetSlider.setVisible(false);
+            flangerRateSlider.setVisible(false);
+            flangerDepthSlider.setVisible(false);
+            flangerDelaySlider.setVisible(false);
+            flangerWetSlider.setVisible(false);
+            phaserRateSlider.setVisible(true);
+            phaserDepthSlider.setVisible(true);
+            phaserCenterFreqSlider.setVisible(true);
+            phaserWetSlider.setVisible(true);
         }
     }
 }
