@@ -43,7 +43,8 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     chorusDelaySlider.addListener(this);
     
     // Chorus Wet Knob
-    chorusWetSlider.setBounds(490, 30, 80, 80);
+//    chorusWetSlider.setBounds(490, 30, 80, 80);
+    chorusWetSlider.setBounds(260, 150, 80, 80);
     chorusWetSlider.setRange(0.f,100.f);
     chorusWetSlider.setSkewFactorFromMidPoint(50.f);
     chorusWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -79,7 +80,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     flangerDelaySlider.addListener(this);
     
     // Flanger Wet Knob
-    flangerWetSlider.setBounds(490, 30, 80, 80);
+    flangerWetSlider.setBounds(260, 150, 80, 80);
     flangerWetSlider.setRange(0.f,100.f);
     flangerWetSlider.setSkewFactorFromMidPoint(50.f);
     flangerWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -115,7 +116,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     phaserCenterFreqSlider.addListener(this);
     
     // Phaser Wet Knob
-    phaserWetSlider.setBounds(490, 30, 80, 80);
+    phaserWetSlider.setBounds(260, 150, 80, 80);
     phaserWetSlider.setRange(0.f,100.f);
     phaserWetSlider.setSkewFactorFromMidPoint(50.f);
     phaserWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -125,14 +126,14 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     
     // ComboBox Selection
     selector.addListener(this);
-    selector.setBounds(230, 100, 140, 40);
+    selector.setBounds(230, 70, 140, 40);
     selector.addItem("Chorus",1);
     selector.addItem("Flanger",2);
     selector.addItem("Phaser",3);
     addAndMakeVisible(selector);
     
     // Toggle Button
-    bypassButton.setBounds(30, 20, 100, 50);
+    bypassButton.setBounds(20, 10, 100, 50);
     bypassButton.setButtonText("Bypass");
     bypassButton.setToggleState(false, juce::dontSendNotification);
     addAndMakeVisible(bypassButton);
@@ -146,17 +147,22 @@ ModulatedDelayAudioProcessorEditor::~ModulatedDelayAudioProcessorEditor()
 //==============================================================================
 void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll (juce::Colours::lightcoral); // a work-in-progress
+    auto baseColour = juce::Colours::salmon;
+    auto colour = baseColour.brighter();
+    g.fillAll (colour);
     
     g.setColour (juce::Colours::white);
-    g.setFont (25.0f);
-    g.drawFittedText ("My Modulated Delay Plugin!", getLocalBounds(), juce::Justification::centredTop, 1);
+    g.setFont (40.0f);
+    g.drawFittedText ("3-in-1 Mod-Delay", getLocalBounds(), juce::Justification::centredTop, false);
     
+    // I'm not sure how to change which text appears for which effect, e.g. "Center Freq" in lieu of "Delay" for Phaser
     g.setFont(20.0f);
     g.drawText ("Rate", 100, 170, 100, 40, juce::Justification::centred, false);
     g.drawText ("Depth", 400, 170, 100, 40, juce::Justification::centred, false);
     g.drawText ("Delay", 250, 245, 100, 40, juce::Justification::centred, false);
-    g.drawText ("Wet", 515, 0, 100, 40, juce::Justification::left, false);
+    g.drawText ("Wet", 249, 120, 100, 40, juce::Justification::centred, false);
+    
+    // Eventually, I want to include a randomization button (die image) in the upper right corner to randomly assign reasonable values for the effect that is selected in the comboBox. That's the last remaining UI feature to code
 }
 
 void ModulatedDelayAudioProcessorEditor::resized()
