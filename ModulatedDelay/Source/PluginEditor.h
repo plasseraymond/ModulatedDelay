@@ -59,7 +59,9 @@ private:
     juce::ComboBox selector;
     
     // declare GUI bypass checkbox
-    juce::ToggleButton bypassButton;
+    juce::TextButton bypassButton { "bypass" };
+    
+//    juce::Look
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulatedDelayAudioProcessorEditor)
 };
