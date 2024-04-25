@@ -21,7 +21,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     getLookAndFeel().setColour(juce::Slider::rotarySliderOutlineColourId, baseColor.brighter(0.6f));
     getLookAndFeel().setColour(juce::Slider::rotarySliderFillColourId, baseColor.darker(0.6f));
     getLookAndFeel().setColour(juce::Slider::textBoxOutlineColourId, baseColor);
-    getLookAndFeel().setColour(juce::ComboBox::backgroundColourId, baseColor.brighter(0.6f));
+    getLookAndFeel().setColour(juce::ComboBox::backgroundColourId, baseColor.darker(0.6f));
     getLookAndFeel().setColour(juce::TextButton::buttonColourId, baseColor.brighter(0.6f));
     getLookAndFeel().setColour(juce::TextButton::buttonOnColourId, baseColor.darker(0.6f));
     getLookAndFeel().setDefaultSansSerifTypefaceName("Avenir");
@@ -33,9 +33,8 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     chorusRateSlider.setNumDecimalPlacesToDisplay(1);
     chorusRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    chorusRateSlider.setTextValueSuffix(" Hz");
+    chorusRateSlider.setTextValueSuffix(" hz");
     addAndMakeVisible(chorusRateSlider);
-//    chorusRateSlider.setVisible(true);
     chorusRateSlider.addListener(this);
     
     // Chorus Depth Knob
@@ -47,23 +46,20 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     chorusDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
     addAndMakeVisible(chorusDepthSlider);
-//    chorusDepthSlider.setVisible(true);
     chorusDepthSlider.addListener(this);
     
     // Chorus Delay Knob
     chorusDelaySlider.setBounds(240, 275, 120, 120);
-    chorusDelaySlider.setRange(1.f,50.f);
-    chorusDelaySlider.setSkewFactorFromMidPoint(25.f);
+    chorusDelaySlider.setRange(10.f,50.f);
+    chorusDelaySlider.setSkewFactorFromMidPoint(30.f);
     chorusDelaySlider.setNumDecimalPlacesToDisplay(1);
     chorusDelaySlider.setTextValueSuffix(" ms");
     chorusDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
     addAndMakeVisible(chorusDelaySlider);
-//    chorusDelaySlider.setVisible(true);
     chorusDelaySlider.addListener(this);
     
     // Chorus Wet Knob
-//    chorusWetSlider.setBounds(490, 30, 80, 80);
     chorusWetSlider.setBounds(260, 150, 80, 80);
     chorusWetSlider.setRange(0.f,100.f);
     chorusWetSlider.setSkewFactorFromMidPoint(50.f);
@@ -72,79 +68,86 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     chorusWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
     addAndMakeVisible(chorusWetSlider);
-//    chorusWetSlider.setVisible(true);
     chorusWetSlider.addListener(this);
     
     // Flanger Rate Knob
-    flangerRateSlider.setBounds(100, 200, 100, 100);
+    flangerRateSlider.setBounds(90, 200, 120, 120);
     flangerRateSlider.setRange(0.1f,10.f);
     flangerRateSlider.setSkewFactorFromMidPoint(5.f);
+    flangerRateSlider.setNumDecimalPlacesToDisplay(1);
+    flangerRateSlider.setTextValueSuffix(" hz");
     flangerRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(flangerRateSlider);
     flangerRateSlider.addListener(this);
     
     // Flanger Depth Knob
-    flangerDepthSlider.setBounds(400, 200, 100, 100);
+    flangerDepthSlider.setBounds(390, 200, 120, 120);
     flangerDepthSlider.setRange(1.f,10.f);
     flangerDepthSlider.setSkewFactorFromMidPoint(5.f);
+    flangerDepthSlider.setNumDecimalPlacesToDisplay(1);
+    flangerDepthSlider.setTextValueSuffix(" samples");
     flangerDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(flangerDepthSlider);
     flangerDepthSlider.addListener(this);
     
     // Flanger Delay Knob
-    flangerDelaySlider.setBounds(250, 275, 100, 100);
+    flangerDelaySlider.setBounds(240, 275, 120, 120);
     flangerDelaySlider.setRange(1.f,50.f);
     flangerDelaySlider.setSkewFactorFromMidPoint(25.f);
+    flangerDelaySlider.setNumDecimalPlacesToDisplay(1);
+    flangerDelaySlider.setTextValueSuffix(" samples");
     flangerDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(flangerDelaySlider);
     flangerDelaySlider.addListener(this);
     
     // Flanger Wet Knob
     flangerWetSlider.setBounds(260, 150, 80, 80);
     flangerWetSlider.setRange(0.f,100.f);
     flangerWetSlider.setSkewFactorFromMidPoint(50.f);
+    flangerWetSlider.setNumDecimalPlacesToDisplay(0);
+    flangerWetSlider.setTextValueSuffix(" %");
     flangerWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(flangerWetSlider);
     flangerWetSlider.addListener(this);
     
     // Phaser Rate Knob
-    phaserRateSlider.setBounds(100, 200, 100, 100);
+    phaserRateSlider.setBounds(90, 200, 120, 120);
     phaserRateSlider.setRange(0.1f,10.f);
     phaserRateSlider.setSkewFactorFromMidPoint(5.f);
+    phaserRateSlider.setNumDecimalPlacesToDisplay(1);
+    phaserRateSlider.setTextValueSuffix(" hz");
     phaserRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(phaserRateSlider);
     phaserRateSlider.addListener(this);
     
     // Phaser Depth Knob
-    phaserDepthSlider.setBounds(400, 200, 100, 100);
+    phaserDepthSlider.setBounds(390, 200, 120, 120);
     phaserDepthSlider.setRange(500.f,1500.f);
     phaserDepthSlider.setSkewFactorFromMidPoint(1000.f);
+    phaserDepthSlider.setNumDecimalPlacesToDisplay(1);
+    phaserDepthSlider.setTextValueSuffix(" hz");
     phaserDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(phaserDepthSlider);
     phaserDepthSlider.addListener(this);
     
     // Phaser Center Frequency Knob
-    phaserCenterFreqSlider.setBounds(250, 275, 100, 100);
-    phaserCenterFreqSlider.setRange(250.f,12000.f);
-    phaserCenterFreqSlider.setSkewFactorFromMidPoint(6000.f);
+    phaserCenterFreqSlider.setBounds(240, 275, 120, 120);
+    phaserCenterFreqSlider.setRange(200.f,12000.f);
+    phaserCenterFreqSlider.setSkewFactorFromMidPoint(6100.f);
+    phaserCenterFreqSlider.setNumDecimalPlacesToDisplay(1);
+    phaserCenterFreqSlider.setTextValueSuffix(" hz");
     phaserCenterFreqSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserCenterFreqSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(phaserCenterFreqSlider);
     phaserCenterFreqSlider.addListener(this);
     
     // Phaser Wet Knob
     phaserWetSlider.setBounds(260, 150, 80, 80);
     phaserWetSlider.setRange(0.f,100.f);
     phaserWetSlider.setSkewFactorFromMidPoint(50.f);
+    phaserWetSlider.setNumDecimalPlacesToDisplay(0);
+    phaserWetSlider.setTextValueSuffix(" %");
     phaserWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-//    addAndMakeVisible(phaserWetSlider);
     phaserWetSlider.addListener(this);
     
     // ComboBox Selection
@@ -175,14 +178,13 @@ void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll(juce::Colour(242,137,92));
     
     g.setColour(juce::Colours::azure);
-    g.setFont(50.f);
-    g.drawText("3-in-1 Mod-Delay", 100, 4, 400, 60, juce::Justification::centred, false);
+    g.setFont(55.f);
+    g.drawText("Trifecta", 100, 4, 400, 60, juce::Justification::centred, false);
     
-    // I'm not sure how to change which text appears for which effect, e.g. "Center Freq" in lieu of "Delay" for Phaser
     g.setFont(30.f);
     g.drawText("rate", 100, 170, 100, 40, juce::Justification::centred, false);
     g.drawText("depth", 400, 170, 100, 40, juce::Justification::centred, false);
-    g.drawText("wet", 250, 120, 100, 40, juce::Justification::centred, false);
+    g.drawText("mix", 250, 120, 100, 40, juce::Justification::centred, false);
     g.drawText("delay", 250, 245, 100, 40, juce::Justification::centred, false);
 
     // Eventually, I want to include a randomization button (die image) in the upper right corner to randomly assign reasonable values for the effect that is selected in the comboBox. That's the last remaining UI feature to code
