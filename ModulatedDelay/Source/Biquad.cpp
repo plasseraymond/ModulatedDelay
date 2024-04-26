@@ -12,10 +12,10 @@
 
 float Biquad::processDelay(float x, const int c, float lfoValue) {
     // determine normalized frequency value based on LFO
-    w0 = (float) (2.0 * M_PI) * lfoValue / Fs;
+    w0 = (float)(2.f * M_PI * lfoValue / Fs);
     
     // determine alpha
-    alpha = std::sin(w0) / (2.0f * 0.7071f);
+    alpha = std::sin(w0) / (2.f * 0.707f);
 
     // use APF implementation to update coefficients based on Audio EQ Cookbook
     updateCoefficients();
@@ -35,10 +35,10 @@ float Biquad::processDelay(float x, const int c, float lfoValue) {
 
 void Biquad::updateCoefficients() {
     // APF recipe
-    b0 = 1.0f - alpha;
-    b1 = -2.0f * std::cos(w0);
-    b2 = 1.0f + alpha;
-    a0 = 1.0f + alpha;
-    a1 = -2.0f * std::cos(w0);
-    a2 = 1.0f - alpha;
+    b0 = 1.f - alpha;
+    b1 = -2.f * std::cos(w0);
+    b2 = 1.f + alpha;
+    a0 = 1.f + alpha;
+    a1 = -2.f * std::cos(w0);
+    a2 = 1.f - alpha;
 }

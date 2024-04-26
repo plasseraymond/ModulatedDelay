@@ -12,6 +12,20 @@
 #include "FlangerEffect.h"
 #include "PhaserEffect.h"
 
+const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB1 = "CHORUSKNOB1";
+const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB2 = "CHORUSKNOB2";
+const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB3 = "CHORUSKNOB3";
+const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB4 = "CHORUSKNOB4";
+const juce::StringRef ModulatedDelayAudioProcessor::FLANGERKNOB1 = "FLANGERKNOB1";
+const juce::StringRef ModulatedDelayAudioProcessor::FLANGERKNOB2 = "FLANGERKNOB2";
+const juce::StringRef ModulatedDelayAudioProcessor::FLANGERKNOB3 = "FLANGERKNOB3";
+const juce::StringRef ModulatedDelayAudioProcessor::FLANGERKNOB4 = "FLANGERKNOB4";
+const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB1 = "PHASERKNOB1";
+const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB2 = "PHASERKNOB2";
+const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB3 = "PHASERKNOB3";
+const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB4 = "PHASERKNOB4";
+const juce::StringRef ModulatedDelayAudioProcessor::BYPASSBUTTON = "BYPASSBUTTON";
+
 //==============================================================================
 ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -22,15 +36,43 @@ ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ) ,
 #endif
-{
+apvts(*this, nullptr, "Params", createParams()) {
+    // empty block
 }
 
 ModulatedDelayAudioProcessor::~ModulatedDelayAudioProcessor()
 {
     // delete the effect pointer to prevent memory leak
     delete effect;
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout ModulatedDelayAudioProcessor::createParams() {
+    
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{CHORUSKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{CHORUSKNOB2,ParameterVersionHint},"Depth",1.f,10.f,7.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{CHORUSKNOB3,ParameterVersionHint},"Delay",10.f,50.f,40.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {CHORUSKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB2,ParameterVersionHint},"Depth",1.f,10.f,4.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB3,ParameterVersionHint},"Delay",1.f,50.f,5.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {FLANGERKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.8f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB2,ParameterVersionHint},"Depth",500.f,1500.f,1500.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB3,ParameterVersionHint},"Delay",200.f,12000.f,1000.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {PHASERKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{BYPASSBUTTON,ParameterVersionHint},"Bypass",false));
+    
+    return {params.begin(),params.end()};
 }
 
 //==============================================================================
@@ -106,7 +148,6 @@ void ModulatedDelayAudioProcessor::prepareToPlay (double sampleRate, int samples
     
     // assign the host's sample rate to the plugin's sample rate
     Fs = sampleRate;
-    
 }
 
 void ModulatedDelayAudioProcessor::releaseResources()
@@ -156,28 +197,6 @@ void ModulatedDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     // simply bypass the processing if the toggle button is engaged
     if(bypass)
         return;
-    
-    // set plugin DSP params based on the values of each GUI knob/slider
-    if(effectID == 1) {
-        effect->setRate(chorusEffectRate);
-        effect->setDepth(chorusEffectDepth);
-        effect->setDelay(chorusEffectDelay);
-        effect->setWet(chorusEffectWet);
-    }
-
-    if(effectID == 2) {
-        effect->setRate(flangerEffectRate);
-        effect->setDepth(flangerEffectDepth);
-        effect->setDelay(flangerEffectDelay);
-        effect->setWet(flangerEffectWet);
-    }
-    
-    if(effectID == 3) {
-        effect->setRate(phaserEffectRate);
-        effect->setDepth(phaserEffectDepth);
-        effect->setDelay(phaserEffectCenterFreq);
-        effect->setWet(phaserEffectWet);
-    }
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -202,21 +221,24 @@ juce::AudioProcessorEditor* ModulatedDelayAudioProcessor::createEditor()
 //==============================================================================
 void ModulatedDelayAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    auto currentState = apvts.copyState();
+    
+    std::unique_ptr<juce::XmlElement> xml(currentState.createXml());
+    
+    copyXmlToBinary(*xml, destData);
 }
 
 void ModulatedDelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
+    
+    juce::ValueTree newTree = juce::ValueTree::fromXml(*xml);
+    
+    apvts.replaceState(newTree);
 }
 
 void ModulatedDelayAudioProcessor::setEffect(int selection) {
-    
-    effectID = selection;
-    
+        
     // CHORUS = 1
     // FLANGER = 2
     // PHASER = 3
@@ -239,6 +261,58 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
     
     // call the derived class's implementation of prepare and pass it the plugin's sample rate
     effect->prepare(Fs);
+}
+
+void ModulatedDelayAudioProcessor::chorusRateSliderChanged(float value) {
+    effect->setRate(value);
+}
+
+void ModulatedDelayAudioProcessor::chorusDepthSliderChanged(float value) {
+    effect->setDepth(value);
+}
+
+void ModulatedDelayAudioProcessor::chorusDelaySliderChanged(float value) {
+    effect->setDelay(value);
+}
+
+void ModulatedDelayAudioProcessor::chorusWetSliderChanged(float value) {
+    effect->setWet(value);
+}
+
+void ModulatedDelayAudioProcessor::flangerRateSliderChanged(float value) {
+    effect->setRate(value);
+}
+
+void ModulatedDelayAudioProcessor::flangerDepthSliderChanged(float value) {
+    effect->setDepth(value);
+}
+
+void ModulatedDelayAudioProcessor::flangerDelaySliderChanged(float value) {
+    effect->setDelay(value);
+}
+
+void ModulatedDelayAudioProcessor::flangerWetSliderChanged(float value) {
+    effect->setWet(value);
+}
+
+void ModulatedDelayAudioProcessor::phaserRateSliderChanged(float value) {
+    effect->setRate(value);
+}
+
+void ModulatedDelayAudioProcessor::phaserDepthSliderChanged(float value) {
+    effect->setDepth(value);
+}
+
+void ModulatedDelayAudioProcessor::phaserCenterFreqSliderChanged(float value) {
+    effect->setDelay(value);
+}
+
+void ModulatedDelayAudioProcessor::phaserWetSliderChanged(float value) {
+    effect->setWet(value);
+}
+
+void ModulatedDelayAudioProcessor::buttonClicked(bool value) {
+    bypass = value;
 }
 
 //==============================================================================

@@ -54,33 +54,50 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    // establish whether effect is Chorus, Flanger, or Phaser processor using comboBox
-    void setEffect(int selection);
-    
-    // initialize effect variables to connect with GUI knobs/sliders
-    float chorusEffectRate = 0.1f;
-    float chorusEffectDepth = 1.f;
-    float chorusEffectDelay = 1.f;
-    float chorusEffectWet = 0.f;
-    
-    float flangerEffectRate = 0.1f;
-    float flangerEffectDepth = 1.f;
-    float flangerEffectDelay = 1.f;
-    float flangerEffectWet = 0.f;
-    
-    float phaserEffectRate = 0.1f;
-    float phaserEffectDepth = 1.f;
-    float phaserEffectCenterFreq = 1.f;
-    float phaserEffectWet = 0.f;
+    juce::AudioProcessorValueTreeState apvts;
     
     // declare bypass button
     bool bypass = false;
-
+    
+    static const juce::StringRef CHORUSKNOB1;
+    static const juce::StringRef CHORUSKNOB2;
+    static const juce::StringRef CHORUSKNOB3;
+    static const juce::StringRef CHORUSKNOB4;
+    static const juce::StringRef FLANGERKNOB1;
+    static const juce::StringRef FLANGERKNOB2;
+    static const juce::StringRef FLANGERKNOB3;
+    static const juce::StringRef FLANGERKNOB4;
+    static const juce::StringRef PHASERKNOB1;
+    static const juce::StringRef PHASERKNOB2;
+    static const juce::StringRef PHASERKNOB3;
+    static const juce::StringRef PHASERKNOB4;
+    static const juce::StringRef BYPASSBUTTON;
+    
+    // establish whether effect is Chorus, Flanger, or Phaser processor using comboBox
+    void setEffect(int selection);
+    
+    void chorusRateSliderChanged(float value);
+    void chorusDepthSliderChanged(float value);
+    void chorusDelaySliderChanged(float value);
+    void chorusWetSliderChanged(float value);
+    void flangerRateSliderChanged(float value);
+    void flangerDepthSliderChanged(float value);
+    void flangerDelaySliderChanged(float value);
+    void flangerWetSliderChanged(float value);
+    void phaserRateSliderChanged(float value);
+    void phaserDepthSliderChanged(float value);
+    void phaserCenterFreqSliderChanged(float value);
+    void phaserWetSliderChanged(float value);
+    void buttonClicked(bool value);
+    
 private:
+    int ParameterVersionHint = 1;
+    
     // create a pointer to a base class type efffect
     ModulatedDelayEffect * effect;
     double Fs = 1.0;
-    int effectID = 0;
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout createParams();
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulatedDelayAudioProcessor)

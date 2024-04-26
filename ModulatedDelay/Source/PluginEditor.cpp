@@ -28,144 +28,158 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
 
     // Chorus Rate Knob
     chorusRateSlider.setBounds(90, 200, 120, 120);
-    chorusRateSlider.setRange(0.1f,10.f);
-    chorusRateSlider.setSkewFactorFromMidPoint(5.f);
     chorusRateSlider.setNumDecimalPlacesToDisplay(1);
+    chorusRateSlider.setTextValueSuffix(" hz");
     chorusRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    chorusRateSlider.setTextValueSuffix(" hz");
+    chorusRateSlider.onValueChange = [this]() {
+        audioProcessor.chorusRateSliderChanged(chorusRateSlider.getValue());
+    };
     addAndMakeVisible(chorusRateSlider);
-    chorusRateSlider.addListener(this);
     
     // Chorus Depth Knob
     chorusDepthSlider.setBounds(390, 200, 120, 120);
-    chorusDepthSlider.setRange(1.f,10.f);
-    chorusDepthSlider.setSkewFactorFromMidPoint(5.f);
     chorusDepthSlider.setNumDecimalPlacesToDisplay(1);
     chorusDepthSlider.setTextValueSuffix(" ms");
     chorusDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    chorusDepthSlider.onValueChange = [this]() {
+        audioProcessor.chorusDepthSliderChanged(chorusDepthSlider.getValue());
+    };
     addAndMakeVisible(chorusDepthSlider);
-    chorusDepthSlider.addListener(this);
     
     // Chorus Delay Knob
     chorusDelaySlider.setBounds(240, 275, 120, 120);
-    chorusDelaySlider.setRange(10.f,50.f);
-    chorusDelaySlider.setSkewFactorFromMidPoint(30.f);
     chorusDelaySlider.setNumDecimalPlacesToDisplay(1);
     chorusDelaySlider.setTextValueSuffix(" ms");
     chorusDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    chorusDelaySlider.onValueChange = [this]() {
+        audioProcessor.chorusDelaySliderChanged(chorusDelaySlider.getValue());
+    };
     addAndMakeVisible(chorusDelaySlider);
-    chorusDelaySlider.addListener(this);
     
     // Chorus Wet Knob
     chorusWetSlider.setBounds(260, 150, 80, 80);
-    chorusWetSlider.setRange(0.f,100.f);
-    chorusWetSlider.setSkewFactorFromMidPoint(50.f);
     chorusWetSlider.setNumDecimalPlacesToDisplay(0);
     chorusWetSlider.setTextValueSuffix(" %");
     chorusWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     chorusWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
+    chorusWetSlider.onValueChange = [this]() {
+        audioProcessor.chorusWetSliderChanged(chorusWetSlider.getValue());
+    };
     addAndMakeVisible(chorusWetSlider);
-    chorusWetSlider.addListener(this);
     
     // Flanger Rate Knob
     flangerRateSlider.setBounds(90, 200, 120, 120);
-    flangerRateSlider.setRange(0.1f,10.f);
-    flangerRateSlider.setSkewFactorFromMidPoint(5.f);
     flangerRateSlider.setNumDecimalPlacesToDisplay(1);
     flangerRateSlider.setTextValueSuffix(" hz");
     flangerRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    flangerRateSlider.addListener(this);
+    flangerRateSlider.onValueChange = [this]() {
+        audioProcessor.flangerRateSliderChanged(flangerRateSlider.getValue());
+    };
     
     // Flanger Depth Knob
     flangerDepthSlider.setBounds(390, 200, 120, 120);
-    flangerDepthSlider.setRange(1.f,10.f);
-    flangerDepthSlider.setSkewFactorFromMidPoint(5.f);
     flangerDepthSlider.setNumDecimalPlacesToDisplay(1);
-    flangerDepthSlider.setTextValueSuffix(" samples");
+    flangerDepthSlider.setTextValueSuffix(" sample(s)");
     flangerDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    flangerDepthSlider.addListener(this);
+    flangerDepthSlider.onValueChange = [this]() {
+        audioProcessor.flangerDepthSliderChanged(flangerDepthSlider.getValue());
+    };
     
     // Flanger Delay Knob
     flangerDelaySlider.setBounds(240, 275, 120, 120);
-    flangerDelaySlider.setRange(1.f,50.f);
-    flangerDelaySlider.setSkewFactorFromMidPoint(25.f);
     flangerDelaySlider.setNumDecimalPlacesToDisplay(1);
-    flangerDelaySlider.setTextValueSuffix(" samples");
+    flangerDelaySlider.setTextValueSuffix(" sample(s)");
     flangerDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    flangerDelaySlider.addListener(this);
+    flangerDelaySlider.onValueChange = [this]() {
+        audioProcessor.flangerDelaySliderChanged(flangerDelaySlider.getValue());
+    };
     
     // Flanger Wet Knob
     flangerWetSlider.setBounds(260, 150, 80, 80);
-    flangerWetSlider.setRange(0.f,100.f);
-    flangerWetSlider.setSkewFactorFromMidPoint(50.f);
     flangerWetSlider.setNumDecimalPlacesToDisplay(0);
     flangerWetSlider.setTextValueSuffix(" %");
     flangerWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    flangerWetSlider.addListener(this);
+    flangerWetSlider.onValueChange = [this]() {
+        audioProcessor.flangerWetSliderChanged(flangerWetSlider.getValue());
+    };
     
     // Phaser Rate Knob
     phaserRateSlider.setBounds(90, 200, 120, 120);
-    phaserRateSlider.setRange(0.1f,10.f);
-    phaserRateSlider.setSkewFactorFromMidPoint(5.f);
     phaserRateSlider.setNumDecimalPlacesToDisplay(1);
     phaserRateSlider.setTextValueSuffix(" hz");
     phaserRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserRateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    phaserRateSlider.addListener(this);
+    phaserRateSlider.onValueChange = [this]() {
+        audioProcessor.phaserRateSliderChanged(phaserRateSlider.getValue());
+    };
     
     // Phaser Depth Knob
     phaserDepthSlider.setBounds(390, 200, 120, 120);
-    phaserDepthSlider.setRange(500.f,1500.f);
-    phaserDepthSlider.setSkewFactorFromMidPoint(1000.f);
     phaserDepthSlider.setNumDecimalPlacesToDisplay(1);
     phaserDepthSlider.setTextValueSuffix(" hz");
     phaserDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    phaserDepthSlider.addListener(this);
+    phaserDepthSlider.onValueChange = [this]() {
+        audioProcessor.phaserDepthSliderChanged(phaserDepthSlider.getValue());
+    };
     
     // Phaser Center Frequency Knob
     phaserCenterFreqSlider.setBounds(240, 275, 120, 120);
-    phaserCenterFreqSlider.setRange(200.f,12000.f);
-    phaserCenterFreqSlider.setSkewFactorFromMidPoint(6100.f);
     phaserCenterFreqSlider.setNumDecimalPlacesToDisplay(1);
     phaserCenterFreqSlider.setTextValueSuffix(" hz");
     phaserCenterFreqSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserCenterFreqSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    phaserCenterFreqSlider.addListener(this);
+    phaserCenterFreqSlider.onValueChange = [this]() {
+        audioProcessor.phaserCenterFreqSliderChanged(phaserCenterFreqSlider.getValue());
+    };
     
     // Phaser Wet Knob
     phaserWetSlider.setBounds(260, 150, 80, 80);
-    phaserWetSlider.setRange(0.f,100.f);
-    phaserWetSlider.setSkewFactorFromMidPoint(50.f);
     phaserWetSlider.setNumDecimalPlacesToDisplay(0);
     phaserWetSlider.setTextValueSuffix(" %");
     phaserWetSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     phaserWetSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
-    phaserWetSlider.addListener(this);
+    phaserWetSlider.onValueChange = [this]() {
+        audioProcessor.phaserWetSliderChanged(phaserWetSlider.getValue());
+    };
     
     // ComboBox Selection
-    selector.addListener(this);
     selector.setBounds(230, 70, 140, 40);
     selector.addItem("chorus",1);
     selector.addItem("flanger",2);
     selector.addItem("phaser",3);
     addAndMakeVisible(selector);
+    selector.addListener(this);
     
-    // Toggle Button
-//    bypassButton.setBounds(20, 20, 100, 100);
-//    bypassButton.setButtonText("bypass");
-//    bypassButton.setToggleState(false, juce::dontSendNotification);
+    // Text Button
     bypassButton.setClickingTogglesState(true);
     bypassButton.setBounds(25, 25, 60, 40);
+    bypassButton.onClick = [this]() {
+        audioProcessor.buttonClicked(bypassButton.getToggleState());
+    };
     addAndMakeVisible(bypassButton);
-    bypassButton.addListener(this);
+    
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB1,chorusRateSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB2,chorusDepthSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB3,chorusDelaySlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB4,chorusWetSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::FLANGERKNOB1,flangerRateSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::FLANGERKNOB2,flangerDepthSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::FLANGERKNOB3,flangerDelaySlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::FLANGERKNOB4,flangerWetSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB1,phaserRateSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB2,phaserDepthSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB3,phaserCenterFreqSlider));
+    sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB4,phaserWetSlider));
+    
+    buttonAttachments.emplace_back(new ButtonAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::BYPASSBUTTON,bypassButton));
 }
 
 ModulatedDelayAudioProcessorEditor::~ModulatedDelayAudioProcessorEditor()
@@ -194,57 +208,6 @@ void ModulatedDelayAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-}
-
-// derived class implementation for changing each slider value
-void ModulatedDelayAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) {
-    if(slider == &chorusRateSlider) {
-        audioProcessor.chorusEffectRate = chorusRateSlider.getValue();
-    }
-    
-    if(slider == &chorusDepthSlider) {
-        audioProcessor.chorusEffectDepth = chorusDepthSlider.getValue();
-    }
-    
-    if(slider == &chorusDelaySlider) {
-        audioProcessor.chorusEffectDelay = chorusDelaySlider.getValue();
-    }
-    
-    if(slider == &chorusWetSlider) {
-        audioProcessor.chorusEffectWet = chorusWetSlider.getValue();
-    }
-    
-    if(slider == &flangerRateSlider) {
-        audioProcessor.flangerEffectRate = flangerRateSlider.getValue();
-    }
-    
-    if(slider == &flangerDepthSlider) {
-        audioProcessor.flangerEffectDepth = flangerDepthSlider.getValue();
-    }
-    
-    if(slider == &flangerDelaySlider) {
-        audioProcessor.flangerEffectDelay = flangerDelaySlider.getValue();
-    }
-    
-    if(slider == &flangerWetSlider) {
-        audioProcessor.flangerEffectWet = flangerWetSlider.getValue();
-    }
-    
-    if(slider == &phaserRateSlider) {
-        audioProcessor.phaserEffectRate = phaserRateSlider.getValue();
-    }
-    
-    if(slider == &phaserDepthSlider) {
-        audioProcessor.phaserEffectDepth = phaserDepthSlider.getValue();
-    }
-    
-    if(slider == &phaserCenterFreqSlider) {
-        audioProcessor.phaserEffectCenterFreq = phaserCenterFreqSlider.getValue();
-    }
-    
-    if(slider == &phaserWetSlider) {
-        audioProcessor.phaserEffectWet = phaserWetSlider.getValue();
-    }
 }
 
 // derived class implementation for changing the drop-down menu selection
@@ -280,7 +243,6 @@ void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBo
             phaserDepthSlider.setVisible(false);
             phaserCenterFreqSlider.setVisible(false);
             phaserWetSlider.setVisible(false);
-
         }
         
         if(selector.getSelectedId() == 3) {
@@ -298,12 +260,5 @@ void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBo
             addAndMakeVisible(phaserCenterFreqSlider);
             addAndMakeVisible(phaserWetSlider);
         }
-    }
-}
-
-// derived class implementation for engaging the bypass toggle button
-void ModulatedDelayAudioProcessorEditor::buttonClicked(juce::Button* button) {
-    if(button == &bypassButton) {
-        audioProcessor.bypass = bypassButton.getToggleState();
     }
 }
