@@ -16,7 +16,7 @@ void ModulatedDelayEffect::process(float * buffer, const int N, const int c) {
     for(int n = 0; n < N; ++n) {
         // first get the value of the LFO given the current state of rate, depth, and delay
         float lfoValue = lfo.calculate(rate, depth, delay, c);
-        
+
         // next process the input signal using the LFO value
         float x = buffer[n];
         float y = processSample(x, c, lfoValue);

@@ -83,7 +83,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     // Flanger Depth Knob
     flangerDepthSlider.setBounds(390, 200, 120, 120);
     flangerDepthSlider.setNumDecimalPlacesToDisplay(1);
-    flangerDepthSlider.setTextValueSuffix(" sample(s)");
+    flangerDepthSlider.setTextValueSuffix(" samples");
     flangerDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDepthSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
     flangerDepthSlider.onValueChange = [this]() {
@@ -93,7 +93,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     // Flanger Delay Knob
     flangerDelaySlider.setBounds(240, 275, 120, 120);
     flangerDelaySlider.setNumDecimalPlacesToDisplay(1);
-    flangerDelaySlider.setTextValueSuffix(" sample(s)");
+    flangerDelaySlider.setTextValueSuffix(" samples");
     flangerDelaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     flangerDelaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 75, 25);
     flangerDelaySlider.onValueChange = [this]() {
@@ -155,8 +155,52 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     selector.addItem("chorus",1);
     selector.addItem("flanger",2);
     selector.addItem("phaser",3);
+    selector.onChange = [this]() {
+        audioProcessor.comboBoxChanged(selector.getSelectedId());
+        if(selector.getSelectedId() == 1) {
+            addAndMakeVisible(chorusRateSlider);
+            addAndMakeVisible(chorusDepthSlider);
+            addAndMakeVisible(chorusDelaySlider);
+            addAndMakeVisible(chorusWetSlider);
+            flangerRateSlider.setVisible(false);
+            flangerDepthSlider.setVisible(false);
+            flangerDelaySlider.setVisible(false);
+            flangerWetSlider.setVisible(false);
+            phaserRateSlider.setVisible(false);
+            phaserDepthSlider.setVisible(false);
+            phaserCenterFreqSlider.setVisible(false);
+            phaserWetSlider.setVisible(false);
+        }
+        if(selector.getSelectedId() == 2) {
+            chorusRateSlider.setVisible(false);
+            chorusDepthSlider.setVisible(false);
+            chorusDelaySlider.setVisible(false);
+            chorusWetSlider.setVisible(false);
+            addAndMakeVisible(flangerRateSlider);
+            addAndMakeVisible(flangerDepthSlider);
+            addAndMakeVisible(flangerDelaySlider);
+            addAndMakeVisible(flangerWetSlider);
+            phaserRateSlider.setVisible(false);
+            phaserDepthSlider.setVisible(false);
+            phaserCenterFreqSlider.setVisible(false);
+            phaserWetSlider.setVisible(false);
+        }
+        if(selector.getSelectedId() == 3) {
+            chorusRateSlider.setVisible(false);
+            chorusDepthSlider.setVisible(false);
+            chorusDelaySlider.setVisible(false);
+            chorusWetSlider.setVisible(false);
+            flangerRateSlider.setVisible(false);
+            flangerDepthSlider.setVisible(false);
+            flangerDelaySlider.setVisible(false);
+            flangerWetSlider.setVisible(false);
+            addAndMakeVisible(phaserRateSlider);
+            addAndMakeVisible(phaserDepthSlider);
+            addAndMakeVisible(phaserCenterFreqSlider);
+            addAndMakeVisible(phaserWetSlider);
+        }
+    };
     addAndMakeVisible(selector);
-    selector.addListener(this);
     
     // Text Button
     bypassButton.setClickingTogglesState(true);
@@ -165,6 +209,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
         audioProcessor.buttonClicked(bypassButton.getToggleState());
     };
     addAndMakeVisible(bypassButton);
+    
     
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB1,chorusRateSlider));
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB2,chorusDepthSlider));
@@ -180,6 +225,8 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB4,phaserWetSlider));
     
     buttonAttachments.emplace_back(new ButtonAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::BYPASSBUTTON,bypassButton));
+        
+    comboBoxAttachments.emplace_back(new ComboBoxAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::COMBOBOX,selector));
 }
 
 ModulatedDelayAudioProcessorEditor::~ModulatedDelayAudioProcessorEditor()
@@ -194,7 +241,7 @@ void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour(juce::Colours::azure);
     g.setFont(55.f);
     g.drawText("Trifecta", 100, 4, 400, 60, juce::Justification::centred, false);
-    
+
     g.setFont(30.f);
     g.drawText("rate", 100, 170, 100, 40, juce::Justification::centred, false);
     g.drawText("depth", 400, 170, 100, 40, juce::Justification::centred, false);
@@ -208,57 +255,4 @@ void ModulatedDelayAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-}
-
-// derived class implementation for changing the drop-down menu selection
-void ModulatedDelayAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox) {
-    if(comboBox == &selector) {
-        if(selector.getSelectedId() == 1) {
-            audioProcessor.setEffect(selector.getSelectedId());
-            addAndMakeVisible(chorusRateSlider);
-            addAndMakeVisible(chorusDepthSlider);
-            addAndMakeVisible(chorusDelaySlider);
-            addAndMakeVisible(chorusWetSlider);
-            flangerRateSlider.setVisible(false);
-            flangerDepthSlider.setVisible(false);
-            flangerDelaySlider.setVisible(false);
-            flangerWetSlider.setVisible(false);
-            phaserRateSlider.setVisible(false);
-            phaserDepthSlider.setVisible(false);
-            phaserCenterFreqSlider.setVisible(false);
-            phaserWetSlider.setVisible(false);
-        }
-        
-        if(selector.getSelectedId() == 2) {
-            audioProcessor.setEffect(selector.getSelectedId());
-            chorusRateSlider.setVisible(false);
-            chorusDepthSlider.setVisible(false);
-            chorusDelaySlider.setVisible(false);
-            chorusWetSlider.setVisible(false);
-            addAndMakeVisible(flangerRateSlider);
-            addAndMakeVisible(flangerDepthSlider);
-            addAndMakeVisible(flangerDelaySlider);
-            addAndMakeVisible(flangerWetSlider);
-            phaserRateSlider.setVisible(false);
-            phaserDepthSlider.setVisible(false);
-            phaserCenterFreqSlider.setVisible(false);
-            phaserWetSlider.setVisible(false);
-        }
-        
-        if(selector.getSelectedId() == 3) {
-            audioProcessor.setEffect(selector.getSelectedId());
-            chorusRateSlider.setVisible(false);
-            chorusDepthSlider.setVisible(false);
-            chorusDelaySlider.setVisible(false);
-            chorusWetSlider.setVisible(false);
-            flangerRateSlider.setVisible(false);
-            flangerDepthSlider.setVisible(false);
-            flangerDelaySlider.setVisible(false);
-            flangerWetSlider.setVisible(false);
-            addAndMakeVisible(phaserRateSlider);
-            addAndMakeVisible(phaserDepthSlider);
-            addAndMakeVisible(phaserCenterFreqSlider);
-            addAndMakeVisible(phaserWetSlider);
-        }
-    }
 }

@@ -72,7 +72,8 @@ public:
     static const juce::StringRef PHASERKNOB3;
     static const juce::StringRef PHASERKNOB4;
     static const juce::StringRef BYPASSBUTTON;
-    
+    static const juce::StringRef COMBOBOX;
+
     // establish whether effect is Chorus, Flanger, or Phaser processor using comboBox
     void setEffect(int selection);
     
@@ -89,6 +90,7 @@ public:
     void phaserCenterFreqSliderChanged(float value);
     void phaserWetSliderChanged(float value);
     void buttonClicked(bool value);
+    void comboBoxChanged(int selection);
     
 private:
     int ParameterVersionHint = 1;

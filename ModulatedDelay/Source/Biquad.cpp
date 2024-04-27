@@ -15,7 +15,7 @@ float Biquad::processDelay(float x, const int c, float lfoValue) {
     w0 = (float)(2.f * M_PI * lfoValue / Fs);
     
     // determine alpha
-    alpha = std::sin(w0) / (2.f * 0.707f);
+    alpha = std::sin(w0) / (2.f * 0.5f);
 
     // use APF implementation to update coefficients based on Audio EQ Cookbook
     updateCoefficients();

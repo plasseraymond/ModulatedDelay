@@ -25,6 +25,7 @@ const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB2 = "PHASERKNOB2";
 const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB3 = "PHASERKNOB3";
 const juce::StringRef ModulatedDelayAudioProcessor::PHASERKNOB4 = "PHASERKNOB4";
 const juce::StringRef ModulatedDelayAudioProcessor::BYPASSBUTTON = "BYPASSBUTTON";
+const juce::StringRef ModulatedDelayAudioProcessor::COMBOBOX = "COMBOBOX";
 
 //==============================================================================
 ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
@@ -65,12 +66,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout ModulatedDelayAudioProcessor
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
         {FLANGERKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.8f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB2,ParameterVersionHint},"Depth",500.f,1500.f,1500.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB3,ParameterVersionHint},"Delay",200.f,12000.f,1000.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB2,ParameterVersionHint},"Depth",500.f,1500.f,1000.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {PHASERKNOB3,ParameterVersionHint},"Center Freq",100.f,15000.f,1000.f));
     params
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
         {PHASERKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{BYPASSBUTTON,ParameterVersionHint},"Bypass",false));
+    params.push_back(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{COMBOBOX,ParameterVersionHint},"Selection",juce::StringArray{"chorus","flanger","phaser"},0));
     
     return {params.begin(),params.end()};
 }
@@ -146,6 +150,11 @@ void ModulatedDelayAudioProcessor::prepareToPlay (double sampleRate, int samples
     // call the ChorusEffect implementation of the prepare method and pass it the host's sample rate
     effect->prepare(sampleRate);
     
+    effect->setRate(*apvts.getRawParameterValue(CHORUSKNOB1));
+    effect->setDepth(*apvts.getRawParameterValue(CHORUSKNOB2));
+    effect->setDelay(*apvts.getRawParameterValue(CHORUSKNOB3));
+    effect->setWet(*apvts.getRawParameterValue(CHORUSKNOB4));
+
     // assign the host's sample rate to the plugin's sample rate
     Fs = sampleRate;
 }
@@ -249,14 +258,26 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
     // depending on the comboBox selection, create the correct effect
     if(selection == 1) {
         effect = new ChorusEffect;
+        effect->setRate(*apvts.getRawParameterValue(CHORUSKNOB1));
+        effect->setDepth(*apvts.getRawParameterValue(CHORUSKNOB2));
+        effect->setDelay(*apvts.getRawParameterValue(CHORUSKNOB3));
+        effect->setWet(*apvts.getRawParameterValue(CHORUSKNOB4));
     }
     
     if(selection == 2) {
         effect = new FlangerEffect;
+        effect->setRate(*apvts.getRawParameterValue(FLANGERKNOB1));
+        effect->setDepth(*apvts.getRawParameterValue(FLANGERKNOB2));
+        effect->setDelay(*apvts.getRawParameterValue(FLANGERKNOB3));
+        effect->setWet(*apvts.getRawParameterValue(FLANGERKNOB4));
     }
     
     if(selection == 3) {
         effect = new PhaserEffect;
+        effect->setRate(*apvts.getRawParameterValue(PHASERKNOB1));
+        effect->setDepth(*apvts.getRawParameterValue(PHASERKNOB2));
+        effect->setDelay(*apvts.getRawParameterValue(PHASERKNOB3));
+        effect->setWet(*apvts.getRawParameterValue(PHASERKNOB4));
     }
     
     // call the derived class's implementation of prepare and pass it the plugin's sample rate
@@ -312,7 +333,11 @@ void ModulatedDelayAudioProcessor::phaserWetSliderChanged(float value) {
 }
 
 void ModulatedDelayAudioProcessor::buttonClicked(bool value) {
-    bypass = value;
+    this->bypass = value;
+}
+
+void ModulatedDelayAudioProcessor::comboBoxChanged(int selection) {
+    this->setEffect(selection);
 }
 
 //==============================================================================

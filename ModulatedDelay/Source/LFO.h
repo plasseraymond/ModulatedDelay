@@ -24,4 +24,9 @@ public:
 private:
     float Fs = 1.f;
     float currentAngle[2] = {0.f}; // keeps track of position along unit circle for L & R channels
+    
+    float smoothedDepth[2] = {0.f};
+    float smoothedDelay[2] = {0.f};
+    float alpha = 0.999f;
+    const float respTime = 0.1f;
 };

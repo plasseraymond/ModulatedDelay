@@ -11,11 +11,15 @@
 #include "LFO.h"
 
 float LFO::calculate(float rate, float depth, float delay, const int c) {
+    
+    smoothedDepth[c] = alpha * smoothedDepth[c] + (1.f - alpha) * depth;
+    smoothedDelay[c] = alpha * smoothedDelay[c] + (1.f - alpha) * delay;
+    
     // determine the angle by which the LFO traverses the unit circle
     float angleChange = rate * (1.f/Fs) * 2.f * M_PI;
     
     // calculate the LFO's value at its current angle
-    float lfoValue = depth * sin(currentAngle[c]) + delay;
+    float lfoValue = smoothedDepth[c] * sin(currentAngle[c]) + smoothedDelay[c];
     
     // update the current angle based on the angle of change
     currentAngle[c] += angleChange;

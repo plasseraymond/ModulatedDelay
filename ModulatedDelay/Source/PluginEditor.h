@@ -15,9 +15,9 @@
 /**
 */
 // inherit the necessary GUI graphics classes to add listeners
-class ModulatedDelayAudioProcessorEditor  : public juce::AudioProcessorEditor ,
-                                            public juce::ComboBox::Listener
-//                                            public juce::Slider::Listener ,
+class ModulatedDelayAudioProcessorEditor  : public juce::AudioProcessorEditor
+//                                            public juce::ComboBox::Listener
+//                                            public juce::Slider::Listener
 //                                            public juce::Button::Listener
 {
 public:
@@ -26,13 +26,11 @@ public:
     
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
+    using ComboBoxAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    
-    // override corresponding juce graphics methods for GUI components
-    void comboBoxChanged(juce::ComboBox* comboBox) override;
 
 private:
 
@@ -61,10 +59,11 @@ private:
     
     // UI bypass text button
     juce::TextButton bypassButton { "bypass" };
-    
+        
     // APVTS attachments
     std::vector<std::unique_ptr<SliderAttachment>> sliderAttachments;
     std::vector<std::unique_ptr<ButtonAttachment>> buttonAttachments;
+    std::vector<std::unique_ptr<ComboBoxAttachment>> comboBoxAttachments;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulatedDelayAudioProcessorEditor)
 };
