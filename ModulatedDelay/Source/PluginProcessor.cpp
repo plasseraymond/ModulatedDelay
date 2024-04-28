@@ -8,9 +8,9 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "ChorusEffect.h"
-#include "FlangerEffect.h"
-#include "PhaserEffect.h"
+#include "DSP/ChorusEffect.h"
+#include "DSP/FlangerEffect.h"
+#include "DSP/PhaserEffect.h"
 
 const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB1 = "CHORUSKNOB1";
 const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB2 = "CHORUSKNOB2";
@@ -53,26 +53,36 @@ juce::AudioProcessorValueTreeState::ParameterLayout ModulatedDelayAudioProcessor
     
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{CHORUSKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{CHORUSKNOB2,ParameterVersionHint},"Depth",1.f,10.f,7.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{CHORUSKNOB3,ParameterVersionHint},"Delay",10.f,50.f,40.f));
     params
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
-        {CHORUSKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB2,ParameterVersionHint},"Depth",1.f,10.f,4.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB3,ParameterVersionHint},"Delay",1.f,50.f,5.f));
+        {CHORUSKNOB1,ParameterVersionHint},"Chorus Rate",0.1f,10.f,0.5f));
     params
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
-        {FLANGERKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB1,ParameterVersionHint},"Rate",0.1f,10.f,0.8f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{PHASERKNOB2,ParameterVersionHint},"Depth",500.f,1500.f,1000.f));
+        {CHORUSKNOB2,ParameterVersionHint},"Chorus Depth",1.f,10.f,7.f));
     params
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
-        {PHASERKNOB3,ParameterVersionHint},"Center Freq",100.f,15000.f,1000.f));
+        {CHORUSKNOB3,ParameterVersionHint},"Chorus Delay",10.f,50.f,40.f));
     params
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
-        {PHASERKNOB4,ParameterVersionHint},"Mix",0.f,100.f,50.f));
+        {CHORUSKNOB4,ParameterVersionHint},"Chorus Mix",0.f,100.f,50.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB1,ParameterVersionHint},"Flanger Rate",0.1f,10.f,0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB2,ParameterVersionHint},"Flanger Depth",1.f,10.f,4.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{FLANGERKNOB3,ParameterVersionHint},"Flanger Delay",1.f,50.f,5.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {FLANGERKNOB4,ParameterVersionHint},"Flanger Mix",0.f,100.f,50.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {PHASERKNOB1,ParameterVersionHint},"Phaser Rate",0.1f,10.f,0.8f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {PHASERKNOB2,ParameterVersionHint},"Phaser Depth",500.f,1500.f,1000.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {PHASERKNOB3,ParameterVersionHint},"Phaser Center Freq",1600.f,14500.f,2000.f));
+    params
+        .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
+        {PHASERKNOB4,ParameterVersionHint},"Phaser Mix",0.f,100.f,50.f));
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{BYPASSBUTTON,ParameterVersionHint},"Bypass",false));
     params.push_back(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{COMBOBOX,ParameterVersionHint},"Selection",juce::StringArray{"chorus","flanger","phaser"},0));
     

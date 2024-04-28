@@ -9,7 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "ModulatedDelayEffect.h"
+#include "DSP/ModulatedDelayEffect.h"
 
 //==============================================================================
 /**
