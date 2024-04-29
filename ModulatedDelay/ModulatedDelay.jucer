@@ -4,6 +4,7 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="ohVSd8" name="ModulatedDelay">
     <GROUP id="{968045D2-509A-FDEC-A37E-958C2398FDE3}" name="Source">
+      <FILE id="KAZmsy" name="dieImage2.png" compile="0" resource="1" file="dieImage2.png"/>
       <GROUP id="{7C9BC9BA-CB3F-2031-B990-5D088CBC636B}" name="DSP">
         <FILE id="QMAGF2" name="ModulatedDelayEffect.cpp" compile="1" resource="0"
               file="Source/DSP/ModulatedDelayEffect.cpp"/>

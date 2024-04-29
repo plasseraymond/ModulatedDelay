@@ -16,14 +16,12 @@
 */
 // inherit the necessary GUI graphics classes to add listeners
 class ModulatedDelayAudioProcessorEditor  : public juce::AudioProcessorEditor
-//                                            public juce::ComboBox::Listener
-//                                            public juce::Slider::Listener
-//                                            public juce::Button::Listener
 {
 public:
     ModulatedDelayAudioProcessorEditor (ModulatedDelayAudioProcessor&);
     ~ModulatedDelayAudioProcessorEditor() override;
     
+    // saves me some extra steps not having to type this every time
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
     using ComboBoxAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
@@ -59,6 +57,12 @@ private:
     
     // UI bypass text button
     juce::TextButton bypassButton { "bypass" };
+    
+    // UI die image button
+    juce::ImageButton dieButton;
+    
+    // UI randomization method connected to die image button trigger click
+    void randomizeParams(int selection);
         
     // APVTS attachments
     std::vector<std::unique_ptr<SliderAttachment>> sliderAttachments;

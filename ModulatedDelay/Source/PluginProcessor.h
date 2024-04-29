@@ -54,11 +54,13 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    // declare APVTS
     juce::AudioProcessorValueTreeState apvts;
     
-    // declare bypass button
+    // declare bypass value
     bool bypass = false;
     
+    // string references instead of string literals for APVTS
     static const juce::StringRef CHORUSKNOB1;
     static const juce::StringRef CHORUSKNOB2;
     static const juce::StringRef CHORUSKNOB3;
@@ -74,9 +76,10 @@ public:
     static const juce::StringRef BYPASSBUTTON;
     static const juce::StringRef COMBOBOX;
 
-    // establish whether effect is Chorus, Flanger, or Phaser processor using comboBox
+    // method to establish whether effect is Chorus, Flanger, or Phaser processor from comboBox
     void setEffect(int selection);
     
+    // methods to update DSP whenever UI changes
     void chorusRateSliderChanged(float value);
     void chorusDepthSliderChanged(float value);
     void chorusDelaySliderChanged(float value);
@@ -93,12 +96,14 @@ public:
     void comboBoxChanged(int selection);
     
 private:
+    // necessary for some DAWs (e.g. Logic)
     int ParameterVersionHint = 1;
     
     // create a pointer to a base class type efffect
     ModulatedDelayEffect * effect;
     double Fs = 1.0;
     
+    // APVTS method to create all necessary parameters
     juce::AudioProcessorValueTreeState::ParameterLayout createParams();
     
     //==============================================================================

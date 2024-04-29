@@ -11,7 +11,6 @@
 #include "ModulatedDelayEffect.h"
 
 void ModulatedDelayEffect::process(float * buffer, const int N, const int c) {
-    
     // loop through all samples in buffer
     for(int n = 0; n < N; ++n) {
         // first get the value of the LFO given the current state of rate, depth, and delay

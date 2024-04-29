@@ -12,6 +12,7 @@
 #include "DSP/FlangerEffect.h"
 #include "DSP/PhaserEffect.h"
 
+// assign string literals to all string references
 const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB1 = "CHORUSKNOB1";
 const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB2 = "CHORUSKNOB2";
 const juce::StringRef ModulatedDelayAudioProcessor::CHORUSKNOB3 = "CHORUSKNOB3";
@@ -39,6 +40,7 @@ ModulatedDelayAudioProcessor::ModulatedDelayAudioProcessor()
                      #endif
                        ) ,
 #endif
+// initialize APVTS based on parameters created below
 apvts(*this, nullptr, "Params", createParams()) {
     // empty block
 }
@@ -50,9 +52,10 @@ ModulatedDelayAudioProcessor::~ModulatedDelayAudioProcessor()
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout ModulatedDelayAudioProcessor::createParams() {
-    
+    // use ranged audio parameters for the vector of pointers to be used by the APVTS
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
+    // create all the necessary parameters
     params
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
         {CHORUSKNOB1,ParameterVersionHint},"Chorus Rate",0.1f,10.f,0.5f));
@@ -84,7 +87,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout ModulatedDelayAudioProcessor
         .push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID
         {PHASERKNOB4,ParameterVersionHint},"Phaser Mix",0.f,100.f,50.f));
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{BYPASSBUTTON,ParameterVersionHint},"Bypass",false));
-    params.push_back(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{COMBOBOX,ParameterVersionHint},"Selection",juce::StringArray{"chorus","flanger","phaser"},0));
+    params.push_back(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{COMBOBOX,ParameterVersionHint},"Selection",juce::StringArray{"Chorus","Flanger","Phaser"},0));
     
     return {params.begin(),params.end()};
 }
@@ -160,6 +163,7 @@ void ModulatedDelayAudioProcessor::prepareToPlay (double sampleRate, int samples
     // call the ChorusEffect implementation of the prepare method and pass it the host's sample rate
     effect->prepare(sampleRate);
     
+    // update DSP initial values based on APVTS parameters
     effect->setRate(*apvts.getRawParameterValue(CHORUSKNOB1));
     effect->setDepth(*apvts.getRawParameterValue(CHORUSKNOB2));
     effect->setDelay(*apvts.getRawParameterValue(CHORUSKNOB3));
@@ -265,7 +269,7 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
     // first delete the pointer pointing to the current effect
     delete effect;
     
-    // depending on the comboBox selection, create the correct effect
+    // depending on the comboBox selection, create the correct effect and update the DSP
     if(selection == 1) {
         effect = new ChorusEffect;
         effect->setRate(*apvts.getRawParameterValue(CHORUSKNOB1));
@@ -294,6 +298,7 @@ void ModulatedDelayAudioProcessor::setEffect(int selection) {
     effect->prepare(Fs);
 }
 
+// implementations for each update parameter method
 void ModulatedDelayAudioProcessor::chorusRateSliderChanged(float value) {
     effect->setRate(value);
 }

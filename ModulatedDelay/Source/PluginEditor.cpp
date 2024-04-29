@@ -15,8 +15,10 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
 {
     setSize (600, 400);
     
+    // custom background color
     auto baseColor = juce::Colour(242,137,92);
     
+    // custom lookAndFeel function calls for overall colors and font
     getLookAndFeel().setColour(juce::Slider::thumbColourId, juce::Colours::azure);
     getLookAndFeel().setColour(juce::Slider::rotarySliderOutlineColourId, baseColor.brighter(0.6f));
     getLookAndFeel().setColour(juce::Slider::rotarySliderFillColourId, baseColor.darker(0.6f));
@@ -202,7 +204,7 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     };
     addAndMakeVisible(selector);
     
-    // Text Button
+    // Bypass Text Button
     bypassButton.setClickingTogglesState(true);
     bypassButton.setBounds(25, 25, 60, 40);
     bypassButton.onClick = [this]() {
@@ -210,7 +212,18 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     };
     addAndMakeVisible(bypassButton);
     
+    // Die Image Button
+    srand(unsigned(time(NULL)));
+    auto dieImage = juce::ImageCache::getFromMemory(BinaryData::dieImage2_png, BinaryData::dieImage2_pngSize);
+    dieButton.setImages(true, true, true, dieImage, 1.f, juce::Colours::transparentBlack, juce::Image(), 1.f, juce::Colours::transparentBlack, juce::Image(), 1.f, baseColor, 0);
+    dieButton.triggerClick();
+    dieButton.setBounds(520, 20, 60, 60);
+    dieButton.onClick = [this]() {
+        randomizeParams(selector.getSelectedId());
+    };
+    addAndMakeVisible(dieButton);
     
+    // APVTS Slider Attachments
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB1,chorusRateSlider));
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB2,chorusDepthSlider));
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::CHORUSKNOB3,chorusDelaySlider));
@@ -224,8 +237,10 @@ ModulatedDelayAudioProcessorEditor::ModulatedDelayAudioProcessorEditor (Modulate
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB3,phaserCenterFreqSlider));
     sliderAttachments.emplace_back(new SliderAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::PHASERKNOB4,phaserWetSlider));
     
+    // APVTS Button Attachments
     buttonAttachments.emplace_back(new ButtonAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::BYPASSBUTTON,bypassButton));
-        
+    
+    // APVTS ComboBox Attachments
     comboBoxAttachments.emplace_back(new ComboBoxAttachment(audioProcessor.apvts,ModulatedDelayAudioProcessor::COMBOBOX,selector));
 }
 
@@ -236,23 +251,43 @@ ModulatedDelayAudioProcessorEditor::~ModulatedDelayAudioProcessorEditor()
 //==============================================================================
 void ModulatedDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
+    // Background color
     g.fillAll(juce::Colour(242,137,92));
     
+    // Title
     g.setColour(juce::Colours::azure);
     g.setFont(55.f);
     g.drawText("Trifecta", 100, 4, 400, 60, juce::Justification::centred, false);
 
+    // Slider labels
     g.setFont(30.f);
     g.drawText("rate", 100, 170, 100, 40, juce::Justification::centred, false);
     g.drawText("depth", 400, 170, 100, 40, juce::Justification::centred, false);
     g.drawText("mix", 250, 120, 100, 40, juce::Justification::centred, false);
     g.drawText("delay", 250, 245, 100, 40, juce::Justification::centred, false);
-
-    // Eventually, I want to include a randomization button (die image) in the upper right corner to randomly assign reasonable values for the effect that is selected in the comboBox. That's the last remaining UI feature to code
 }
 
 void ModulatedDelayAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+// parameter randomization method to be used by die ImageButton when triggered
+void ModulatedDelayAudioProcessorEditor::randomizeParams(int selection) {
+    if(selection == 1) {
+        chorusRateSlider.setValue(0.1f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.f-0.1f))));
+        chorusDepthSlider.setValue(1.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.f-1.f))));
+        chorusDelaySlider.setValue(10.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (50.f-1.f))));
+    }
+    if(selection == 2) {
+        flangerRateSlider.setValue(0.1f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.f-0.1f))));
+        flangerDepthSlider.setValue(1.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.f-1.f))));
+        flangerDelaySlider.setValue(1.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (50.f-1.f))));
+    }
+    if(selection == 3) {
+        phaserRateSlider.setValue(0.1f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.f-0.1f))));
+        phaserDepthSlider.setValue(500.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1500.f-500.f))));
+        phaserCenterFreqSlider.setValue(1600.f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (14500.f-1600.f))));
+    }
 }

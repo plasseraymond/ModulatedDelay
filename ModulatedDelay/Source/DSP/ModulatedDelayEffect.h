@@ -30,7 +30,7 @@ public:
     // PURE virtual processSample method which each derived class MUST override
     virtual float processSample(float x, const int c, float lfoValue) = 0;
     
-    // mutators for rate, depth, delay, and wet params
+    // mutators for rate, depth, delay, and wet parameters
     void setRate(float rate) {
         this->rate = rate;
     }
